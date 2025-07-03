@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+@import "tailwindcss";
+
+* {
+  font-family: Outfit;
+}
+
+@theme {
+  --color-primary: hsl(210, 100%, 50%);
+  /* add more custom tokens here if needed */
+}
+
+.active hr {
+  @apply block;
+}
+
+@media (max-width:740px) {
+  .active p {
+    @apply text-white bg-primary;
+  }
+}
+
+::-webkit-scrollbar {
+  @apply hidden;
+}
+
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.marquee-content {
+  display: flex;
+  width: fit-content;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
