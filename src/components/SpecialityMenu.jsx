@@ -17,7 +17,7 @@ const SpecialityMenu = () => {
         to='/ai-symptom-checker'>
       <button
        onClick={() => setTimeout(() => scrollTo(0, 0), 10)}
-        className='mt-2 px-6 py-2 rounded-full bg-primary text-white text-sm hover:opacity-90 transition-all duration-300'
+        className='mt-2 px-6 py-2 cursor-pointer rounded-full bg-primary text-white text-sm hover:opacity-90 transition-all duration-300'
       >
         Try AI Symptom Checker
       </button>

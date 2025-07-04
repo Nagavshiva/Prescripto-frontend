@@ -1,14 +1,16 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AppContext } from '../context/AppContextCreator';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'; // 👁️ import icons
 
 const Login = () => {
   const navigate = useNavigate();
   const { backendUrl, token, setToken } = useContext(AppContext);
-  const [state, setState] = React.useState('Sign Up');
+  const [state, setState] = useState('Sign Up');
+  const [showPassword, setShowPassword] = useState(false); // 👁️ visibility state
 
   const {
     register,
@@ -94,14 +96,21 @@ const Login = () => {
           {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
         </div>
 
-        <div>
+        {/* Password Field with Eye Toggle */}
+        <div className="relative">
           <label className="block mb-1 text-xs sm:text-sm">Password</label>
           <input
             {...register('password', { required: 'Password is required', minLength: 4 })}
-            className="w-full border border-[#DADADA] rounded p-2 focus:outline-primary"
-            type="password"
+            className="w-full border border-[#DADADA] rounded p-2 pr-10 focus:outline-primary"
+            type={showPassword ? 'text' : 'password'}
             placeholder="Password"
           />
+          <span
+            className="absolute right-3 top-9 sm:top-9 cursor-pointer text-gray-500"
+            onClick={() => setShowPassword((prev) => !prev)}
+          >
+            {showPassword ? <AiFillEye size={20} /> : <AiFillEyeInvisible size={20} />}
+          </span>
           {errors.password && (
             <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
           )}
@@ -121,7 +130,7 @@ const Login = () => {
               <span
                 onClick={() => {
                   setState('Login');
-                  setValue('email', ''); // clear values
+                  setValue('email', '');
                   setValue('password', '');
                   reset({ name: '', email: '', password: '' });
                 }}
