@@ -13,9 +13,11 @@ const AppContextProvider = (props) => {
     localStorage.getItem("token") ? localStorage.getItem("token") : ""
   );
   const [userData, setUserData] = useState(false);
+  const [loadingDoctors, setLoadingDoctors] = useState(true);
 
   // Getting Doctors using API
   const getDoctosData = async () => {
+     setLoadingDoctors(true);
     try {
       const { data } = await axios.get(backendUrl + "/api/doctor/list");
       if (data.success) {
@@ -26,7 +28,9 @@ const AppContextProvider = (props) => {
     } catch (error) {
       console.log(error);
       toast.error(error.message);
-    }
+    }finally {
+    setLoadingDoctors(false); // End loading
+  }
   };
 
   // Getting User Profile using API
@@ -66,6 +70,7 @@ const AppContextProvider = (props) => {
     userData,
     setUserData,
     loadUserProfileData,
+    loadingDoctors
   };
 
   return (

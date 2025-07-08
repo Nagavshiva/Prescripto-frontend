@@ -4,7 +4,7 @@ import { AppContext } from '../context/AppContextCreator'
 
 const TopDoctors = () => {
   const navigate = useNavigate()
-  const { doctors } = useContext(AppContext)
+  const { doctors, loadingDoctors } = useContext(AppContext)
 
   return (
     <div className="flex flex-col items-center gap-4 my-16 text-[#262626] md:mx-10">
@@ -15,45 +15,64 @@ const TopDoctors = () => {
 
       <div className="marquee-container mt-6">
         <div className="marquee-content gap-6 px-3">
-          {[...doctors, ...doctors].slice(0, 20).map((item, index) => (
-            <div
-              key={index}
-              onClick={() => {
-                navigate(`/appointment/${item.id}`)
-                scrollTo(0, 0)
-              }}
-              className="w-60 flex-shrink-0 border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-300 bg-white"
-            >
-              <img
-                className="bg-[#EAEFFF] w-full h-52 object-cover"
-                src={item.image}
-                alt=""
-              />
-              <div className="p-4">
+          {loadingDoctors
+            ? Array(6)
+                .fill(null)
+                .map((_, index) => (
+                  <div
+                    key={index}
+                    className="w-60 flex-shrink-0 animate-pulse border border-[#C9D8FF] rounded-xl overflow-hidden bg-white"
+                  >
+                    <div className="bg-gray-200 w-full h-52" />
+                    <div className="p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className="w-2 h-2 rounded-full bg-gray-300" />
+                        <div className="h-3 bg-gray-300 rounded w-20" />
+                      </div>
+                      <div className="h-4 bg-gray-300 rounded w-32 mb-2" />
+                      <div className="h-3 bg-gray-200 rounded w-24" />
+                    </div>
+                  </div>
+                ))
+            : [...doctors, ...doctors].slice(0, 20).map((item, index) => (
                 <div
-                  className={`flex items-center gap-2 text-sm ${
-                    item.available ? 'text-green-500' : 'text-gray-500'
-                  }`}
+                  key={index}
+                  onClick={() => {
+                    navigate(`/appointment/${item.id}`)
+                    scrollTo(0, 0)
+                  }}
+                  className="w-60 flex-shrink-0 border border-[#C9D8FF] rounded-xl overflow-hidden cursor-pointer hover:-translate-y-2 transition-transform duration-300 bg-white"
                 >
-                  <p
-                    className={`w-2 h-2 rounded-full ${
-                      item.available ? 'bg-green-500' : 'bg-gray-500'
-                    }`}
-                  ></p>
-                  <p>{item.available ? 'Available' : 'Not Available'}</p>
+                  <img
+                    className="bg-[#EAEFFF] w-full h-52 object-cover"
+                    src={item.image}
+                    alt=""
+                  />
+                  <div className="p-4">
+                    <div
+                      className={`flex items-center gap-2 text-sm ${
+                        item.available ? 'text-green-500' : 'text-gray-500'
+                      }`}
+                    >
+                      <p
+                        className={`w-2 h-2 rounded-full ${
+                          item.available ? 'bg-green-500' : 'bg-gray-500'
+                        }`}
+                      ></p>
+                      <p>{item.available ? 'Available' : 'Not Available'}</p>
+                    </div>
+                    <p className="text-[#262626] text-lg font-medium">{item.name}</p>
+                    <p className="text-[#5C5C5C] text-sm">{item.speciality}</p>
+                  </div>
                 </div>
-                <p className="text-[#262626] text-lg font-medium">{item.name}</p>
-                <p className="text-[#5C5C5C] text-sm">{item.speciality}</p>
-              </div>
-            </div>
-          ))}
+              ))}
         </div>
       </div>
 
       <button
         onClick={() => {
           navigate('/doctors')
-           setTimeout(() => scrollTo(0, 0), 10)
+          setTimeout(() => scrollTo(0, 0), 10)
         }}
         className="bg-[#EAEFFF] cursor-pointer text-gray-600 px-12 py-3 rounded-full mt-10"
       >
